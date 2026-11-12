@@ -1,0 +1,79 @@
+{
+  "brand": "Receipts Assistant",
+  "networks": [
+    {
+      "name": "receipts_desk",
+      "front_man": "receipts_desk",
+      "hocon": "./receipts_desk.network.json",
+      "description": "Paste text with sources; I check every quoted citation against the page it cites.",
+      "tags": [
+        "agentified-website",
+        "citations",
+        "verification"
+      ],
+      "sample_queries": [
+        "Check this: Wikipedia says \"PostgreSQL, also known as Postgres, is a free and open-source relational database management system\" (https://en.wikipedia.org/wiki/PostgreSQL).",
+        "My draft cites https://en.wikipedia.org/wiki/Python_(programming_language) for \"Python was invented by Linus Torvalds in 1985\". Is that real?",
+        "How many of the receipts on this page were rejected, and why?",
+        "Look up receipt rcpt_0123456789abcdef0123",
+        "Rewrite my essay so the citations pass."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.openai.com/v1",
+    "mock": false,
+    "byok_router": "https://api.openai.com/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Local agents and page-local actions only. Other agents can use the public MCP server at ./mcp."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "receipts_desk",
+    "front_man": "receipts_desk",
+    "available": false,
+    "reason": "The agent network runs in the visitor's browser. The site's own tools are a public MCP server at ./mcp (verify_quote, get_receipt)."
+  },
+  "theme": {
+    "primary": "#1d4ed8"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "receipts_desk",
+        "front_man": "receipts_desk",
+        "aliases": [
+          "receipts_desk"
+        ],
+        "url": "receipts_desk"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "agentTools": [
+      "get_ledger",
+      "check_citation",
+      "look_up_receipt",
+      "clear_ledger"
+    ]
+  }
+}

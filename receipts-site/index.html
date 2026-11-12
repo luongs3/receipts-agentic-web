@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Receipts — citation checking for the open agentic web</title>
+    <meta name="description" content="Receipts checks that a quoted passage really appears on the page it cites, and publishes that check as a reusable agent network any agentic website can load.">
+    <link rel="icon" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="site.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href="./"><span class="logo">🧾</span> Receipts</a>
+        <nav><a href="#check">Check</a><a href="#assistant">Ask</a><a href="#reuse">Use it from your site</a><a href="https://github.com/luongs3/receipts-agentic-web">Source</a></nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <section class="hero">
+        <h1>Every citation an agent gives you, checked against the page it cites.</h1>
+        <p>In our test, a model asked to answer 20 factual questions with a source and a verbatim quote gave 19 citations, and <b>none of the 19 quotes was on the page it named</b>. Receipts fetches the cited page, looks for the passage, and gives back a receipt you can re-read later.</p>
+        <p class="sub">This page is an open agentic website: its agent network, runtime and tools are public files, and any agent can call its citation checker as a public MCP server.</p>
+      </section>
+
+      <section id="check" class="card">
+        <h2>Check a citation</h2>
+        <form id="check-form" novalidate>
+          <label for="check-url">Cited page (URL)</label>
+          <input id="check-url" name="url" type="url" placeholder="https://en.wikipedia.org/wiki/PostgreSQL" required>
+          <label for="check-quote">Quoted passage</label>
+          <textarea id="check-quote" name="quote" rows="3" placeholder="The exact words the claim says appear on that page" required></textarea>
+          <p id="check-error" class="error" role="alert" hidden></p>
+          <div class="row">
+            <button id="check-submit" type="submit">Check the citation</button>
+            <button id="check-example" type="button" class="ghost">Fill an example</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="row spread">
+          <h2>Receipt ledger</h2>
+          <span id="ledger-count" class="muted">No receipts yet</span>
+        </div>
+        <p class="muted">Receipts checked in this tab, newest first. Each receipt is also stored on the server and can be re-read at its link.</p>
+        <ol id="ledger" class="ledger"></ol>
+      </section>
+
+      <section id="assistant" class="assistant" aria-labelledby="assistant-heading">
+        <h2 id="assistant-heading">Ask Receipts</h2>
+        <p>Paste a paragraph with sources, or a claim and a link. The assistant finds each quote-and-source pair, checks it on this page, and tells you which ones hold up.</p>
+        <p class="assistant-note">Your messages and this page's data go to the LLM in the settings below: a free demo model this site pays for (rate-limited), or your own provider and key. Cited pages are fetched by this site's server, not by your browser.</p>
+        <p id="assistant-status" role="status">Connecting the assistant… If this message stays, the assistant could not load. You can still use the page directly.</p>
+        <div id="agent-app">
+          <div data-ns-slot="header"></div>
+          <div class="assistant-panels">
+            <div data-ns-slot="chat"></div>
+            <div data-ns-slot="agents"></div>
+          </div>
+          <div data-ns-slot="settings"></div>
+        </div>
+      </section>
+
+      <section id="reuse" class="card">
+        <h2>Use Receipts from your own agentic website</h2>
+        <p>Receipts publishes two building blocks. Neither needs a key from you or a server of yours.</p>
+        <h3>1. The public MCP server</h3>
+        <p>Any agent, in a browser or on a server, can call <code>verify_quote(url, quote)</code> and <code>get_receipt(id)</code>. CORS is open and no key is needed.</p>
+        <pre><code>{"url": "https://deploytest.theodoikenh.com/oaw-receipts/mcp", "tools": ["verify_quote", "get_receipt"]}</code></pre>
+        <p>An open agentic website lists it in an agent's <code>tools</code> as an MCP URL, so its own network can check citations before it answers.</p>
+        <h3>2. Public receipts</h3>
+        <p>Every check is stored and can be re-read by anyone at <code>/receipt/&lt;id&gt;</code>. An agent that answers with a citation can attach the receipt id, and the reader can verify it without trusting the agent.</p>
+        <h3>3. The agent network</h3>
+        <p>This page's network, <code>receipts_desk</code>, its manifest and runtime are plain static files. Copy them as a starting point for a fact-checking assistant on your own site.</p>
+        <p class="muted">Public files: <a href="agent-manifest.json">agent-manifest.json</a> · <a href="receipts_desk.network.json">receipts_desk.network.json</a> · <a href="receipts_desk.hocon">receipts_desk.hocon</a> · <a href="agent-mcp.json">agent-mcp.json</a> · <a href="links.json">links.json</a></p>
+      </section>
+    </main>
+    <footer class="wrap muted">Receipts · open source (Apache 2.0) · built on the open agentic web spec and the nsdeploy browser runtime.</footer>
+  </body>
+</html>

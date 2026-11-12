@@ -1,0 +1,7 @@
+{
+  "protocol": "nsdeploy-agent-mcp/v1",
+  "network": "receipts_desk",
+  "front_man": "receipts_desk",
+  "available": false,
+  "reason": "The agent network runs in the visitor's browser. The site's own tools are a public MCP server at ./mcp (verify_quote, get_receipt)."
+}

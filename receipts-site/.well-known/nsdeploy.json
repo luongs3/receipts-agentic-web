@@ -1,0 +1,17 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "receipts_desk",
+      "front_man": "receipts_desk",
+      "aliases": [
+        "receipts_desk"
+      ],
+      "url": "receipts_desk"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}
